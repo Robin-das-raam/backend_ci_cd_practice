@@ -9,11 +9,11 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-UPLOAD_DIR = "/home/robinpc/Desktop/Fastapi_prac/backend_ci_cd_prac/uploads"
-OUTPUT_DIR = "/home/robinpc/Desktop/Fastapi_prac/backend_ci_cd_prac/output"
+# UPLOAD_DIR = "/home/robinpc/Desktop/Fastapi_prac/backend_ci_cd_prac/uploads"
+# OUTPUT_DIR = "/home/robinpc/Desktop/Fastapi_prac/backend_ci_cd_prac/output"
 
-os.makedirs(UPLOAD_DIR, exist_ok = True)
-os.makedirs(OUTPUT_DIR, exist_ok = True)
+# os.makedirs(UPLOAD_DIR, exist_ok = True)
+# os.makedirs(OUTPUT_DIR, exist_ok = True)
 
 @router.get("/")
 def root():
