@@ -22,4 +22,4 @@ def root():
 
 @router.get("/hello",response_class=HTMLResponse)
 def say_hello():
-    return "<h1>Hellofrom CI/CD FastaPI aPP!</h1>"
+    return "<h1>Hello from CI/CD FastaPI aPP! now work  </h1>"
