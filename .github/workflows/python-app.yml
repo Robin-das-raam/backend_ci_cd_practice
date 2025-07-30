@@ -1,25 +1,25 @@
-name: Python CI
+# name: Python CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
 
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+#     - name: Set up Python
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.10'
 
     # - name: Install dependencies
     #   run: | 
@@ -29,3 +29,46 @@ jobs:
     #   run: | 
     #     pip install flake8
     #     flake8 .
+
+
+
+name: Python CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+
+    # Deployment step
+    - name: Deploy to Server via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        port: ${{ secrets.SERVER_PORT  }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: | 
+          cd /home/doer/backend_test_cicd
+          source venv/bin/activate
+          cd backend_ci_cd_practice
+          git pull origin main
+          pkill -f uvicorn || true
+          nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
