@@ -4,7 +4,7 @@ from fastapi import APIRouter
 # import uuid
 # from pydantic import BaseModel
 # from fastapi import APIRouter, UploadFile, File
-# from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 
 router = APIRouter()
@@ -20,4 +20,6 @@ def root():
     return {"message": "Backend CI/CD Practice Running . Moving ahead"}
 
 
-# @router.post("/upload_video")
+@router.get("/hello",response_class=HTMLResponse)
+def say_hello():
+    return "<h1> hello Hello from CI/CD FastaPI aPP! now work  </h1>"
