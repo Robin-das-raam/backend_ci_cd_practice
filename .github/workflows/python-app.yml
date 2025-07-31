@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
 
     steps:
     - name: Checkout code
@@ -24,17 +24,11 @@ jobs:
 
 
     # Deployment step
-    - name: Deploy to Server via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        port: ${{ secrets.SERVER_PORT }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: | 
-          cd /home/doer/backend_test_cicd
-          source venv/bin/activate
-          cd backend_ci_cd_practice
-          git pull origin main
-          pkill -f uvicorn || true
-          nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
+    - name: Deploy to Server with self hosted runner
+      run: |
+        cd /home/doer/backend_test_cicd
+        source venv/bin/activate
+        cd backend_ci_cd_practice
+        git pull origin main
+        pkill -f uvicorn || true
+        nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
